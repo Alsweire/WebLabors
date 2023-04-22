@@ -8,11 +8,11 @@ class Country{
 }
 
 class MusicAlbum{
-    constructor(id, countryId, title, image, description)
+    constructor(Id, countryId, titleAlbum, image, description)
     {
-        this.id = id;
+        this.Id = Id;
         this.countryId = countryId;
-        this.title = title;
+        this.titleAlbum = titleAlbum;
         this.image = image;
         this.description = description;
     }
@@ -27,45 +27,44 @@ countries=[
     new Country("sk", "Южная Корея", "Южнокорейские музыкальные альбомы")
 ];
 
-musicAlbums = [
+const musicAlbums = [
     new MusicAlbum(
-        1,
+        "1",
         "ru",
         "Мумий Тролль - Морская",
-        "",
         "",
         ""
     ),
     new MusicAlbum(
-        2,
+        "2",
         "ru",
         "Кино - Группа крови",
         "./maxresdefault.jpg",
         "Шестой студийный альбом советской рок-группы «Кино», вышедший 5 января 1988 года. Получил широкую известность как в СССР, так и за рубежом. Выход альбома принёс группе быстрый рост известности, многие песни стали одними из самых узнаваемых в творчестве группы."
     ),
     new MusicAlbum(
-        3,
+        "3",
         "ru",
         "Noize MC - Последний альбом",
         "",
         ""
     ),
     new MusicAlbum(
-        4,
+        "4",
         "ru",
         "Баста - 3",
         "",
         ""
     ),
     new MusicAlbum(
-        5,
+        "5",
         "ru",
         "L'One - Спутник",
         "",
         ""
     ),
     new MusicAlbum(
-        6,
+        "6",
         "ru",
         "Мегаполис - Из жизни планет",
         "",
@@ -76,7 +75,7 @@ musicAlbums = [
 function MainPage(){
 
     document.querySelector('title').innerText = "Главная";
-    document.querySelector('header').innerHTML=
+    /*document.querySelector('header').innerHTML=
         `<h1 style="color:rgb(50, 35, 117);"><p align="center">Музыкальные альбомы</p></h1>
         <hr>
         <ul class = "menushka">
@@ -87,7 +86,27 @@ function MainPage(){
                 `<li><a onclick="CategoryPage('${country.id}')">${country.name}</a></li>`;
         }
     );
+
     document.querySelector('header').innerHTML += `</ul>`;
+    */
+    const header = document.querySelector('header');
+    header.innerHTML =
+      `<h1 style="color:rgb(50, 35, 117);"><p align="center">Music Albums</p></h1>
+        <hr>
+        <ul class="menushka">
+            <li><a onclick="MainPage()">Главная</a></li>
+        </ul>`;
+
+    const ul = header.querySelector('ul');
+    countries.forEach((country) => {
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.innerText = country.name;
+      a.setAttribute('onclick', `CategoryPage('${country.id}')`);
+      li.appendChild(a);
+      ul.appendChild(li);
+    });
+    
     document.querySelector('main').innerHTML ='';
     document.querySelector('main').innerHTML =
         `<ul type = "circle">`;
@@ -105,7 +124,6 @@ MainPage();
 function CategoryPage(coId){
 
     const countryAlbum = countries.find(({id}) => id === coId);
-    document.querySelector('title').innerHTML='';
     document.querySelector('title').innerHTML=countryAlbum.name;
     document.querySelector('main').innerHTML='';
     document.querySelector('main').innerHTML=
@@ -115,7 +133,7 @@ function CategoryPage(coId){
         (album) => {
             if (album.countryId === coId){
                 document.querySelector('main').innerHTML +=
-                `<li style = "font-size: 20px; color: rgb(62, 62, 126);"><a onclick="AlbumPage('${album.id}')">${album.title}</a></li>`;
+                `<li style = "font-size: 20px; color: rgb(62, 62, 126);"><a onclick="AlbumPage('${album.Id}')">${album.titleAlbum}</a></li>`;
             }
         });
     
@@ -124,13 +142,18 @@ function CategoryPage(coId){
 
 function AlbumPage(albumId){
 
-    const album = albums.find(({id}) => id === albumId);
-    document.querySelector('title').innerHTML='';
-    document.querySelector('title')=album.title;
-    document.querySelector('main').innerHTML='';
-    document.querySelector('main').innerHTML =
-        `<h2>"${album.title}"</h2>
-        <img src="${album.image}" alt="альтернативный текст" width = 100%>
-        <p>${album.description}</p>
-        <hr>`;
+    const album = musicAlbums.find(({Id}) => Id === albumId);
+    if (album != undefined){
+        document.querySelector('title').innerHTML='';
+        document.querySelector('title').innerHTML = album.titleAlbum;
+        document.querySelector('main').innerHTML = '';
+        if ((album.image != "") && (album.description != ""))
+        {
+            document.querySelector('main').innerHTML =
+            `<h2>"${album.titleAlbum}"</h2>
+            <img src="${album.image}" alt="" width = 100%>
+            <p>${album.description}</p>
+            <hr>`;
+        }
+    }
 }
